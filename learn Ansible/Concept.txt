@@ -1,0 +1,44 @@
+Ansible can be installed in contol node is enough.
+It uses ssh,exec and similar commands to connect to their env and run the scripts there.
+
+ansible-doc --type connection --list  === Gives all environments it supports.
+
+Copying files
+ansible -m copy -a "src=master.config dest=~/.gitconfig" localhost
+It copies master.config file to required destination of localhost.
+-m = module [copy module]
+-a = arguments
+
+ansible -m copy -a "src=master.config dest=~/.gitconfig" --check --diff localhost.
+Output:- 
+Displays what are changes in file.
+
+ansible -m copy -a "src=master.config dest=~/.gitconfig" --diff localhost.
+Output:-
+Changes the file.
+
+Idempotence --> Same output, regardless of input and reruns.
+
+ansible = ad hoc command
+
+Scripting ad-hoc i.e., making script of various adhoc commands is not good practice.
+For this, we have playbooks
+
+playbook.yml  --> YAML format
+
+hosts: localhost
+tasks:
+ - copy: src="master.config" dest="~/.gitconfig" 
+
+OR
+
+hosts: localhost
+tasks:
+ - copy: 
+     src: "master.config" 
+     dest: "~/.gitconfig" 
+
+To run playbooks,
+ansible-playbook playbook.yml
+
+--verbose flag --> For additional info
